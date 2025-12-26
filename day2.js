@@ -7,15 +7,21 @@ const redux =require('redux')
 
 const createStore=redux.createStore
 
+const combineReducers= redux.combineReducers
 
 
 // Action type (constant)
 const BUY_CAKE="BUY_CAKE";
+const BUY_ICECREAM="BUY_ICECREAM"
 
 
 
 // Action creator (returns an action object)
-
+function buyIcecream(){
+    return{
+        type:BUY_ICECREAM
+    }
+}
 
 function buyCake(){
     return {
@@ -26,13 +32,16 @@ function buyCake(){
 
 }
 
-//(previousState,action) =>newState
-// Initial state for the store
-const  initiaState={
 
-    numOfCakes:10,
+const initiaCakeState={
+    numOfCakes:10
+}
+
+const initiaIceCreamState={
     numOfIceCreams:20
 }
+//(previousState,action) =>newState
+
 
 // Reducer function
 // It receives the current state and an action,
@@ -40,14 +49,25 @@ const  initiaState={
 
 
 
-
-const reducer=(state=initiaState,action)=>{
+const cakeReducer=(state=initiaCakeState,action)=>{
    switch(action.type){
     case BUY_CAKE: return {
         ...state, 
         numOfCakes:state.numOfCakes -1
     }
+    
+    default:
+        return state 
+   } 
+}
+
+const IceCreameReducer=(state=initiaIceCreamState,action)=>{
+   switch(action.type){
    
+     case BUY_ICECREAM: return {
+        ...state, 
+        numOfIceCreams:state.numOfIceCreams -1
+    }
     default:
         return state 
    } 
@@ -55,12 +75,14 @@ const reducer=(state=initiaState,action)=>{
 
 
 
-
-
+const rootReducer=combineReducers({
+    cake:cakeReducer,
+    IceCreame:IceCreameReducer
+})
 
 
 // Create Redux store using the reducer
-const store= createStore(reducer)
+const store= createStore(rootReducer)
 
 // Print the initial state
 console.log("inital state",store.getState())
